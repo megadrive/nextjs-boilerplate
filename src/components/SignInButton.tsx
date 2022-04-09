@@ -1,23 +1,30 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { Button } from "./Button";
 
 const SignIn = () => {
-  return <Link href="/api/auth/signin">Log In</Link>;
+  return (
+    <Button type="primary">
+      <Link href="/api/auth/signin">
+        <a>Log In</a>
+      </Link>
+    </Button>
+  );
 };
 
-const SignOut = (props: { name: string }) => {
-  const { name } = props;
+const SignOut = () => {
   return (
-    <span>
-      {name} <Link href="/api/auth/signout">Log Out</Link>
-    </span>
+    <Button type="secondary">
+      <Link href="/api/auth/signout">
+        <a>Log Out</a>
+      </Link>
+    </Button>
   );
 };
 
 export const SignInButton = () => {
-  const { data, status } = useSession();
-  const name = data?.user?.name;
-  const loggedIn = status === "authenticated";
+  const { status } = useSession();
+  const authenticated = status === "authenticated";
 
-  return !loggedIn ? <SignIn /> : <SignOut name={name ? name : "Unknown"} />;
+  return !authenticated ? <SignIn /> : <SignOut />;
 };
