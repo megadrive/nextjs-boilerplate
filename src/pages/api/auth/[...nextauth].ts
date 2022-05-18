@@ -7,6 +7,9 @@ import { prisma } from "../../../lib/prisma";
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
+  pages: {
+    signIn: "/signin",
+  },
   // Configure one or more authentication providers
   providers: [
     FacebookProvider({
@@ -43,32 +46,32 @@ export default NextAuth({
   events: {
     async signIn(message) {
       /* on successful sign in */
-      console.log(message);
+      console.log("signIn", message);
     },
     async signOut(message) {
       /* on signout */
-      console.log(message);
+      console.log("signOut", message);
     },
     async createUser(message) {
       /* user created */
-      console.log(message);
+      console.log("createUser", message);
     },
     async updateUser(message) {
       /* user updated - e.g. their email was verified */
-      console.log(message);
+      console.log("updateUser", message);
     },
     async linkAccount(message) {
       /* account (e.g. Twitter) linked to a user */
-      console.log(message);
+      console.log("linkAccount", message);
     },
     async session(message) {
       /* session is active */
-      console.log(message);
+      console.log("session", message);
     },
     /* @ts-ignore */
     async error(message: any) {
       /* error in authentication flow */
-      console.log(message);
+      console.log("error", message);
     },
   },
 });

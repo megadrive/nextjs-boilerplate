@@ -1,23 +1,21 @@
+import { Button } from "@mui/material";
+import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { Button } from "./Button";
+// import { Button } from "./Button";
 
-const SignIn = () => {
+const SignIn: NextPage<{}> = () => {
   return (
-    <Button type="primary">
-      <Link href="/api/auth/signin">
-        <a>Log In</a>
-      </Link>
+    <Button variant="contained" href="/api/auth/signin">
+      Log In
     </Button>
   );
 };
 
 const SignOut = () => {
   return (
-    <Button type="secondary">
-      <Link href="/api/auth/signout">
-        <a>Log Out</a>
-      </Link>
+    <Button variant="outlined" href="/api/auth/signout">
+      Log Out
     </Button>
   );
 };

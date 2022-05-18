@@ -1,9 +1,10 @@
-import "../styles/globals.css";
+// import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
-import { MantineProvider } from "@mantine/core";
 import { darkModeStore } from "../stores/darkMode";
 import { useState } from "react";
+import { RecoilRoot } from "recoil";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const [darkMode, setDarkMode] = useState(darkModeStore.getState());
@@ -12,16 +13,14 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   });
 
   return (
-    <MantineProvider
-      theme={{
-        colorScheme: darkMode ? "dark" : "light",
-        fontFamily: "Tahoma, sans-serif",
-      }}
-    >
+    <RecoilRoot>
       <SessionProvider session={session}>
+        <Head>
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+        </Head>
         <Component {...pageProps} />
       </SessionProvider>
-    </MantineProvider>
+    </RecoilRoot>
   );
 }
 
