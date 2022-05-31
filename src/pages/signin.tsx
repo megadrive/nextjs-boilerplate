@@ -1,5 +1,4 @@
 import { Box, Button, Container, Divider, TextField } from "@mui/material";
-import { fontWeight } from "@mui/system";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
 import {
@@ -10,7 +9,6 @@ import {
 } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useRef } from "react";
 import { ErrorBanner } from "../components/auth/ErrorBanner";
 
 const SignInPage: NextPage<{
@@ -23,7 +21,10 @@ const SignInPage: NextPage<{
   const queryError = router.query?.error;
   const error = Array.isArray(queryError) ? queryError[0] : queryError;
 
-  const onSubmit = () => {};
+  const onSubmit = (event: any) => {
+    event.preventDefault();
+    signIn("credentials");
+  };
 
   return (
     <Container>
@@ -31,10 +32,10 @@ const SignInPage: NextPage<{
         <title>Sign in</title>
       </Head>
 
-      <h1>Sign up</h1>
+      <h1>Sign in</h1>
 
       {error && (
-        <Box>
+        <Box marginX={2} marginY={2}>
           <ErrorBanner errorCode={error} />
         </Box>
       )}
@@ -96,6 +97,7 @@ const SignInPage: NextPage<{
   );
 };
 
+// Check the current session.
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req, res } = context;
   const session = await getSession({ req });

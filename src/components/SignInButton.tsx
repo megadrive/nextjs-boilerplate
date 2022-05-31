@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { NextPage } from "next";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 // import { Button } from "./Button";
 
@@ -14,7 +14,7 @@ const SignIn: NextPage<{}> = () => {
 
 const SignOut = () => {
   return (
-    <Button variant="outlined" href="/api/auth/signout">
+    <Button variant="outlined" onClick={() => signOut()}>
       Log Out
     </Button>
   );
