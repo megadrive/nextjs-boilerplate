@@ -1,15 +1,14 @@
 import { Box, Button, Container, Divider, TextField } from "@mui/material";
 import { GetServerSideProps, NextPage } from "next";
 import { Session } from "next-auth";
-import {
-  getCsrfToken,
-  getProviders,
-  getSession,
-  signIn,
-} from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ErrorBanner } from "../components/auth/ErrorBanner";
+import { Layout } from "../components/Layout";
+import { serverSideCheckAuth } from "../lib/serverSideCheckAuth";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import { Navbar } from "../components/Navbar";
 
 const SignInPage: NextPage<{
   session: Session | null;
@@ -27,10 +26,12 @@ const SignInPage: NextPage<{
   };
 
   return (
-    <Container>
+    <Layout>
       <Head>
         <title>Sign in</title>
       </Head>
+
+      <Navbar />
 
       <h1>Sign in</h1>
 
@@ -87,39 +88,17 @@ const SignInPage: NextPage<{
               key={provider.name}
               href={provider.url}
               onClick={() => signIn(provider.id)}
+              fullWidth
             >
-              Sign in with {provider.name}
+              {provider.name === "Facebook" ? <FacebookIcon /> : provider.name}
             </Button>
           );
         })}
       </Box>
-    </Container>
+    </Layout>
   );
 };
 
 // Check the current session.
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req, res } = context;
-  const session = await getSession({ req });
-
-  // If user has a current session, redirect to main page.
-  if (session && res && session.user) {
-    res.writeHead(302, {
-      location: "/",
-    });
-    res.end();
-    return { props: {} };
-  }
-
-  const csrfToken = await getCsrfToken(context);
-
-  return {
-    props: {
-      session: null,
-      providers: await getProviders(),
-      csrfToken: csrfToken ?? null,
-    },
-  };
-};
-
+export const getServerSideProps: GetServerSideProps = serverSideCheckAuth;
 export default SignInPage;
