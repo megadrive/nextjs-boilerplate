@@ -1,8 +1,6 @@
 import { Button } from "@mui/material";
 import { NextPage } from "next";
 import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-// import { Button } from "./Button";
 
 const SignIn: NextPage<{}> = () => {
   return (
